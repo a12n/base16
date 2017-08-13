@@ -15,7 +15,7 @@
 
 -spec encode(binary()) -> <<_:_*16>>.
 encode(Data) ->
-    << <<(hex(N div 16, lower)), (hex(N rem 16, lower))>> || <<N>> <= Data >>.
+    encode(Data, lower).
 
 -spec decode(<<_:_*16>>) -> binary().
 decode(Base16) when size(Base16) rem 2 =:= 0 ->
@@ -24,6 +24,9 @@ decode(Base16) when size(Base16) rem 2 =:= 0 ->
 %%--------------------------------------------------------------------
 %% Helpers
 %%--------------------------------------------------------------------
+
+encode(Data, Mode) ->
+    << <<(hex(N div 16, Mode)), (hex(N rem 16, Mode))>> || <<N>> <= Data >>.
 
 hex(0, _) -> $0;
 hex(1, _) -> $1;
