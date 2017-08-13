@@ -29,6 +29,10 @@ prop_encode_decode_lowercase() ->
     ?FORALL(H, even_len_binary(hex_lowercase_digit()),
             H =:= base16:encode(base16:decode(H))).
 
+prop_encode_decode_uppercase() ->
+    ?FORALL(H, even_len_binary(hex_uppercase_digit()),
+            H =:= base16:encode_upper(base16:decode(H))).
+
 prop_encode_decode() ->
     ?FORALL(H1, even_len_binary(hex_digit()), begin
             H2 = base16:encode(base16:decode(H1)),
@@ -61,8 +65,11 @@ dead_beef_test() ->
 hex_lowercase_digit() ->
     union([integer($0, $9), integer($a, $f)]).
 
+hex_uppercase_digit() ->
+    union([integer($0, $9), integer($A, $F)]).
+
 hex_digit() ->
-    union([hex_lowercase_digit(), integer($A, $F)]).
+    union([hex_lowercase_digit(), hex_uppercase_digit()]).
 
 even_len_binary(Digit) ->
     ?LET(L, even_len_list(Digit), list_to_binary(L)).
