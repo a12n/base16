@@ -15,7 +15,7 @@
 
 -spec encode(binary()) -> <<_:_*16>>.
 encode(Data) ->
-    << <<(hex(N div 16)), (hex(N rem 16))>> || <<N>> <= Data >>.
+    << <<(hex(N div 16, lower)), (hex(N rem 16, lower))>> || <<N>> <= Data >>.
 
 -spec decode(<<_:_*16>>) -> binary().
 decode(Base16) when size(Base16) rem 2 =:= 0 ->
@@ -25,10 +25,28 @@ decode(Base16) when size(Base16) rem 2 =:= 0 ->
 %% Helpers
 %%--------------------------------------------------------------------
 
-hex(N) when N < 10 ->
-    N + $0;
-hex(N) when N < 16 ->
-    N - 10 + $a.
+hex(0, _) -> $0;
+hex(1, _) -> $1;
+hex(2, _) -> $2;
+hex(3, _) -> $3;
+hex(4, _) -> $4;
+hex(5, _) -> $5;
+hex(6, _) -> $6;
+hex(7, _) -> $7;
+hex(8, _) -> $8;
+hex(9, _) -> $9;
+hex(10, lower) -> $a;
+hex(11, lower) -> $b;
+hex(12, lower) -> $c;
+hex(13, lower) -> $d;
+hex(14, lower) -> $e;
+hex(15, lower) -> $f;
+hex(10, upper) -> $A;
+hex(11, upper) -> $B;
+hex(12, upper) -> $C;
+hex(13, upper) -> $D;
+hex(14, upper) -> $E;
+hex(15, upper) -> $F.
 
 unhex(D) when $0 =< D andalso D =< $9 ->
     D - $0;
