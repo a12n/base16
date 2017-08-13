@@ -7,7 +7,7 @@
 
 -module(base16).
 
--export([encode/1, decode/1]).
+-export([encode/1, encode_upper/1, decode/1]).
 
 %%--------------------------------------------------------------------
 %% Public API
@@ -16,6 +16,10 @@
 -spec encode(binary()) -> <<_:_*16>>.
 encode(Data) ->
     encode(Data, lower).
+
+-spec encode_upper(binary()) -> <<_:_*16>>.
+encode_upper(Data) ->
+    encode(Data, upper).
 
 -spec decode(<<_:_*16>>) -> binary().
 decode(Base16) when size(Base16) rem 2 =:= 0 ->
